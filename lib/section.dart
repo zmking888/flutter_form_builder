@@ -1,25 +1,34 @@
-import 'package:flutter_form_builder/rows/row.dart';
-import 'package:flutter/material.dart' as meterial;
+import 'package:flutter/material.dart';
+import 'package:flutter_form_builder/rows/focusable_row.dart';
 
-class Section {
-  String _title;
-  String get title => _title;
-  List<BaseRow> _rows = [];
-  List<BaseRow> get rows => _rows;
-  meterial.Widget _widget;
-  meterial.Widget get widget => _widget;
+class Section extends StatefulWidget {
+  final List<Widget> children;
 
-  Section({String title}) : _title = title {
-    assert(_title != null);
+  Section({this.children = const <Widget>[]});
+
+  @override
+  State<StatefulWidget> createState() {
+    return new _SectionState();
   }
+}
 
-  operator << (BaseRow row) {
-    _rows.add(row);
-    return this;
-  }
-
-  Section addRow(BaseRow row) {
-    _rows.add(row);
-    return this;
+class _SectionState extends State<Section> {
+  @override
+  Widget build(BuildContext context) {
+    FocusNode currentFocusNode;
+    for(Widget widget in widget.children.reversed) {
+      if(widget is FocusableRow) {
+        if(currentFocusNode != null) {
+          FocusNode node = currentFocusNode;
+          widget.onFocusNext = () {
+            FocusScope.of(context).requestFocus(node);
+          };
+        }
+        currentFocusNode = widget.focusNode;
+      }else {
+        currentFocusNode = null;
+      }
+    }
+    return new Column(children: widget.children,);
   }
 }

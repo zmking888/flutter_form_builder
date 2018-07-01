@@ -44,6 +44,8 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  _handleDayChanged(_) {}
+
   @override
   Widget build(BuildContext context) {
     // This method is rerun every time setState is called, for instance as done
@@ -58,11 +60,39 @@ class _MyHomePageState extends State<MyHomePage> {
         // the App.build method, and use it to set our appbar title.
         title: new Text(widget.title),
       ),
-      body: new FormBuilder(<Section>[
-        new Section(title: "abc") << new TextRow("aaa") << new TextRow("titl"),
-        new Section(title: "abc abc abc abc abc abc abc abc abc abc abc abc")
-            .addRow(new TextRow("title")).addRow(new DecimalRow("digi")).addRow(new IntRow("int")),
-      ]),
+      body: new SingleChildScrollView(
+        child: new Column(
+          children: <Widget>[
+            new TextRow(title: "text row"),
+            new DropdownRow(
+              title: "dropdown dropdown dropdown dropdown dropdown",
+              options: [12, 299999999999999999],
+              initialValue: 12,
+            ),
+            new DateRow(
+              title: "date",
+              initialDate: DateTime.now(),
+              firstDate: new DateTime(2015, 8),
+              lastDate: new DateTime(2101),
+            ),
+            new Section(
+              children: <Widget>[
+                new DecimalRow(title: "decimal:",),
+                new IntRow(title:"int row"),
+                new TextRow(title: "text row"),
+                new TextRow(title: "text row"),
+                new DropdownRow(
+                  title: "dropdown dropdown dropdown dropdown dropdown",
+                  options: [12, 299999999999999999],
+                  initialValue: 12,
+                ),
+                new TextRow(title: "text row"),
+                new TextRow(title: "text row"),
+              ],
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
